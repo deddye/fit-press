@@ -133,7 +133,10 @@
 		{#if articles?.length > 0}
 			{#each articles as article}
 				<div class="border-b border-gray-200 pb-4 dark:border-gray-800">
-					<a href={`/category/${article.category}`} class="text-sm text-indigo-500 hover:underline">
+					<a
+						href={`/newsletters/${article.category}`}
+						class="text-sm text-indigo-500 hover:underline"
+					>
 						{article.category}
 					</a>
 					<h3 class="font-semibold">{article.title}</h3>
