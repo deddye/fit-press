@@ -8,7 +8,7 @@ dotenv.config({ path: '../../.env.development' });
 const parser = new Parser();
 const supabase = createClient(
 	process.env.PUBLIC_SUPABASE_URL!,
-	process.env.PUBLIC_SUPABASE_ANON_KEY!
+	process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
