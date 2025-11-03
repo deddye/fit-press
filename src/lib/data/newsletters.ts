@@ -10,7 +10,7 @@ export const newsletters = [
 		description: 'Competition recaps and strength programming trends.'
 	},
 	{
-		category: 'Crossfit',
+		category: 'CrossFit',
 		name: 'CrossFit Pulse',
 		description: 'Open workouts, athlete profiles, and functional fitness news.'
 	},
