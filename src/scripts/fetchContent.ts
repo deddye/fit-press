@@ -1,13 +1,14 @@
 import Parser from 'rss-parser';
 import { createClient } from '@supabase/supabase-js';
 import OpenAI from 'openai';
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+dotenv.config({ path: '../../.env.development' });
 
 // --- Setup ---
 const parser = new Parser();
 const supabase = createClient(
 	process.env.PUBLIC_SUPABASE_URL!,
-	process.env.PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
+	process.env.PUBLIC_SUPABASE_ANON_KEY!
 );
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -87,7 +88,8 @@ async function fetchArticles() {
 			for (const item of latest) {
 				if (!item.title || !item.link) continue;
 
-				const summary = await summarize(item.contentSnippet || item.title);
+				// const summary = await summarize(item.contentSnippet || item.title);
+				const summary = 'dummy summary';
 				const { error } = await supabase.from('articles').upsert(
 					{
 						category,
@@ -107,19 +109,19 @@ async function fetchArticles() {
 			console.log(`✅ ${category}: ${insertedCount} articles updated.`);
 
 			// --- AI Fallback ---
-			if (insertedCount < 3) {
-				console.log(
-					`⚠️ Only ${insertedCount} articles found for ${category}. Generating filler...`
-				);
-				await createAIFiller(category);
-			}
+			// if (insertedCount < 3) {
+			// 	console.log(
+			// 		`⚠️ Only ${insertedCount} articles found for ${category}. Generating filler...`
+			// 	);
+			// 	await createAIFiller(category);
+			// }
 		} catch (err) {
 			console.error(`❌ Error fetching ${category}:`, err);
 		}
 	}
-
-	console.log('🏁 Fetch complete!');
 }
 
 // --- Run ---
-fetchArticles().catch(console.error);
+await fetchArticles();
+console.log('🏁 Fetch complete!');
+process.exit(0);

@@ -8,6 +8,9 @@
 	let error: string | null = null;
 	let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
+	export let data;
+	const { articles } = data;
+
 	function clearMessageTimer() {
 		if (timeoutId) {
 			clearTimeout(timeoutId);
@@ -118,9 +121,32 @@
 		{/if}
 	</div>
 
+	<h2 class="mt-16 mb-4 text-2xl font-bold">Browse Categories</h2>
 	<div class="grid gap-6 md:grid-cols-2">
 		{#each newsletters as nl}
 			<NewsletterCard {nl} />
 		{/each}
+	</div>
+
+	<h2 class="mt-16 mb-4 text-2xl font-bold">Latest Articles</h2>
+	<div class="space-y-4">
+		{#if articles?.length > 0}
+			{#each articles as article}
+				<div class="border-b border-gray-200 pb-4 dark:border-gray-800">
+					<a href={`/category/${article.category}`} class="text-sm text-indigo-500 hover:underline">
+						{article.category}
+					</a>
+					<h3 class="font-semibold">{article.title}</h3>
+					<p class="text-sm text-gray-600 dark:text-gray-400">{article.summary}</p>
+					<p class="mt-1 text-xs text-gray-500 dark:text-gray-500">
+						Published: {article.published_at
+							? new Date(article.published_at).toLocaleDateString()
+							: 'Unknown'}
+					</p>
+				</div>
+			{/each}
+		{:else}
+			<p class="text-gray-500">No articles yet.</p>
+		{/if}
 	</div>
 </section>

@@ -1,9 +1,15 @@
 <script lang="ts">
-  export let nl;
+	export let nl;
 </script>
 
-<a href={`/newsletters/${nl.slug}`} class="block border rounded-xl p-5 shadow-sm hover:shadow-md transition">
-  <h2 class="font-semibold text-lg">{nl.name}</h2>
-  <p class="text-gray-600 text-sm mb-2">{nl.description}</p>
-  <p class="text-blue-600 text-sm italic">Latest: {nl.latestHeadline}</p>
+<a
+	href={`/newsletters/${nl.category}`}
+	class="block rounded-lg border border-gray-200 p-6 text-left shadow-sm transition hover:border-indigo-400 hover:shadow-md dark:border-gray-700 dark:hover:border-indigo-500"
+>
+	<h3 class="mb-2 text-xl font-semibold text-indigo-600 dark:text-indigo-400">
+		{nl.name}
+	</h3>
+	<p class="text-sm text-gray-600 dark:text-gray-400">
+		{nl.description}
+	</p>
 </a>
