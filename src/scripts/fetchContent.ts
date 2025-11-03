@@ -18,7 +18,7 @@ const feeds: Record<string, string> = {
 	Powerlifting: 'https://www.powerliftingtechnique.com/feed/',
 	Running: 'https://www.runnersworld.com/rss/all.xml',
 	Nutrition: 'https://www.nutrition.org/feed/',
-	CrossFit: 'https://morningchalkup.com/feed/',
+	Crossfit: 'https://morningchalkup.com/feed/',
 	Supplements: 'https://supplementclarity.com/feed/'
 };
 
