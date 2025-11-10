@@ -128,28 +128,57 @@
 		{/each}
 	</div>
 
-	<h2 class="mt-16 mb-4 text-2xl font-bold">Latest Articles</h2>
-	<div class="space-y-4">
-		{#if articles?.length > 0}
-			{#each articles as article}
-				<div class="border-b border-gray-200 pb-4 dark:border-gray-800">
-					<a
-						href={`/newsletters/${article.category}`}
-						class="text-sm text-indigo-500 hover:underline"
-					>
-						{article.category}
-					</a>
-					<h3 class="font-semibold">{article.title}</h3>
-					<p class="text-sm text-gray-600 dark:text-gray-400">{article.summary}</p>
-					<p class="mt-1 text-xs text-gray-500 dark:text-gray-500">
-						Published: {article.published_at
-							? new Date(article.published_at).toLocaleDateString()
-							: 'Unknown'}
-					</p>
+	<h2 class="mt-16 mb-4 text-center text-2xl font-bold">Latest Articles</h2>
+
+	{#if articles?.length > 0}
+		{#each Array.from(new Map(articles.map( (a) => [a.category, articles.filter((b) => b.category === a.category)] )).entries()) as [category, catArticles]}
+			<section class="mb-10 text-left">
+				<h3 class="mb-3 text-xl font-semibold text-indigo-600 capitalize">{category}</h3>
+
+				<!-- horizontal scroll area -->
+				<div
+					class="flex cursor-grab snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-2 active:cursor-grabbing"
+				>
+					{#each catArticles.slice(0, 6) as article}
+						<div
+							class="max-w-[180px] min-w-[180px] shrink-0 snap-start rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+						>
+							<a
+								href={`/newsletters/${article.category}`}
+								class="text-xs text-indigo-500 hover:underline"
+							>
+								{article.category}
+							</a>
+							<h4 class="mt-1 line-clamp-2 text-sm leading-tight font-semibold">
+								{article.title}
+							</h4>
+							<p class="mt-1 line-clamp-3 text-xs text-gray-600 dark:text-gray-400">
+								{article.summary}
+							</p>
+							<p class="mt-1 text-[10px] text-gray-500 dark:text-gray-500">
+								{article.published_at
+									? new Date(article.published_at).toLocaleDateString()
+									: 'Unknown'}
+							</p>
+						</div>
+					{/each}
 				</div>
-			{/each}
-		{:else}
-			<p class="text-gray-500">No articles yet.</p>
-		{/if}
-	</div>
+			</section>
+		{/each}
+	{:else}
+		<p class="text-center text-gray-500">No articles yet.</p>
+	{/if}
 </section>
+
+<style>
+	::-webkit-scrollbar {
+		height: 6px;
+	}
+	::-webkit-scrollbar-thumb {
+		background: rgba(120, 120, 120, 0.25);
+		border-radius: 4px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: rgba(120, 120, 120, 0.45);
+	}
+</style>
