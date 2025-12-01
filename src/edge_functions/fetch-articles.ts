@@ -1,3 +1,4 @@
+// Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 import OpenAI from 'https://esm.sh/openai@4.52.0';
@@ -26,34 +27,82 @@ Deno.serve(async (req) => {
 		});
 	}
 });
+
 const feeds = {
-	Bodybuilding: 'https://www.bodybuilding.com/rss/articles.xml',
-	Powerlifting: 'https://www.powerliftingtechnique.com/feed/',
-	Running: 'https://www.runnersworld.com/rss/all.xml',
-	Nutrition: 'https://www.nutrition.org/feed/',
-	CrossFit: 'https://morningchalkup.com/feed/',
-	Supplements: 'https://supplementclarity.com/feed/'
+	Bodybuilding: [
+		'https://muscleandfitness.com/feed',
+		'https://generationiron.com/feed/',
+		'https://www.simplyshredded.com/feed/'
+	],
+	Powerlifting: [
+		'https://www.powerliftingtechnique.com/feed/',
+		'https://barbend.com/feed/',
+		'https://www.jtsstrength.com/feed/'
+	],
+	Running: [
+		'https://www.runnersworld.com/rss/all.xml',
+		'https://www.irunfar.com/feed',
+		'https://marathonhandbook.com/feed/'
+	],
+	Nutrition: [
+		'https://www.nutrition.org/feed/',
+		'https://www.precisionnutrition.com/feed',
+		'https://www.dietdoctor.com/feed'
+	],
+	CrossFit: ['https://morningchalkup.com/feed/'],
+	Supplements: ['https://supplementclarity.com/feed/'],
+	HealthAndWellness: ['https://www.sciencedaily.com/rss/top/health.xml'],
+	YogaAndMobility: ['https://www.yogajournal.com/feed/', 'https://dailycupofyoga.com/feed/']
 };
-async function fetchFeed(url: any) {
+
+async function fetchFeed(url: string) {
 	const res = await fetch(url);
 	const xml = await res.text();
 	const json = parser.parse(xml);
+
 	const items = json?.rss?.channel?.item ?? json?.feed?.entry ?? [];
+
 	return Array.isArray(items) ? items : [items];
 }
-function stripHtml(html: any) {
+
+function stripHtml(html) {
 	return html
 		.replace(/<[^>]*>/g, '') // Remove all HTML tags like <p>, <a>, etc.
 		.replace(/\s+/g, ' ') // Collapse extra spaces/newlines
 		.trim();
 }
 async function fetchArticles() {
-	console.log('🔄 Fetching fitness articles...');
-	for (const [category, url] of Object.entries(feeds)) {
+	console.log('🔄 Fetching Latest Articles for all Categories...');
+
+	for (const [category, urls] of Object.entries(feeds)) {
+		console.log(`\n=== 📚 ${category} ===`);
+
+		let allItems: any[] = [];
+
+		// Fetch from all feeds
+		for (const url of urls) {
+			try {
+				const items = await fetchFeed(url);
+				const top = items.slice(0, 3); // ⚡ Fetch 2–3 from each URL
+				allItems.push(...top);
+				console.log(`   - Pulled ${top.length} from ${url}`);
+			} catch (err) {
+				console.error(`❌ Error from ${url}`, err);
+			}
+		}
+
+		// Deduplicate by URL/title
+		const seen = new Set();
+		allItems = allItems.filter((item) => {
+			const key = item.link?.href ?? item.link ?? item.title;
+			if (!key || seen.has(key)) return false;
+			seen.add(key);
+			return true;
+		});
+
+		let inserted = 0;
 		try {
-			const items = await fetchFeed(url);
-			let inserted = 0;
-			for (const item of items.slice(0, 5)) {
+			for (const item of allItems.slice(0, 5)) {
 				const title = item.title;
 				const link = item.link?.href ?? item.link;
 				const summary = stripHtml(
@@ -122,7 +171,7 @@ async function fetchArticles() {
 //     }
 //   }
 // }
-async function summarize(text: string) {
+async function summarize(text) {
 	try {
 		const completion = await openai.chat.completions.create({
 			model: 'gpt-4o-mini',
@@ -139,8 +188,8 @@ async function summarize(text: string) {
 		return '';
 	}
 }
-
-async function createAIFiller(category: string) {
+// --- Utility: create AI filler article ---
+async function createAIFiller(category) {
 	try {
 		const completion = await openai.chat.completions.create({
 			model: 'gpt-4o-mini',
