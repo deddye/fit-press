@@ -28,5 +28,15 @@ export const newsletters = [
 		category: 'Supplements',
 		name: 'Supplement Spotlight',
 		description: 'New products, ingredient deep-dives, and market trends.'
+	},
+	{
+		category: 'HealthAndWellness',
+		name: 'Science Based Wellness',
+		description: 'Latest health research, mental wellness tips, and lifestyle advice.'
+	},
+	{
+		category: 'YogaAndMobility',
+		name: 'Mobility Minute',
+		description: 'Techniques, routines, and benefits of yoga and mobility work.'
 	}
 ];

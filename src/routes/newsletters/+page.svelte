@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createClient } from '@supabase/supabase-js';
 	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+	import { newsletters } from '$lib/data/newsletters';
 
 	const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
@@ -11,14 +12,7 @@
 	let messageType: 'success' | 'error' | '' = '';
 	let messageTimeout: NodeJS.Timeout | null = null;
 
-	const categories = [
-		'Bodybuilding',
-		'Powerlifting',
-		'CrossFit',
-		'Running',
-		'Supplements',
-		'Nutrition'
-	];
+	const categories = newsletters.map((n) => n.name);
 
 	async function subscribe() {
 		if (!email) {
@@ -37,7 +31,7 @@
 
 			if (error) throw error;
 
-			showMessage('Subscription updated successfully!', 'success');
+			showMessage('Subscriptions updated successfully!', 'success');
 			email = '';
 			interests = [];
 		} catch (err) {
