@@ -134,7 +134,13 @@
 		{#each Array.from(new Map(articles.map( (a) => [a.category, articles.filter((b) => b.category === a.category)] )).entries()) as [category, catArticles]}
 			<section class="mb-10 text-left">
 				<a href={`/newsletters/${category}`} class="text-indigo-500 hover:underline">
-					<h3 class="mb-3 text-xl font-semibold text-indigo-600 capitalize">{category}</h3>
+					<h3 class="mb-3 text-xl font-semibold text-indigo-600 capitalize">
+						{category === 'HealthAndWellness'
+							? 'Health & Wellness'
+							: category === 'YogaAndMobility'
+								? 'Yoga & Mobility'
+								: category}
+					</h3>
 				</a>
 				<!-- horizontal scroll area -->
 				<div
