@@ -6,7 +6,11 @@
 <section class="mx-auto max-w-4xl px-4 py-12">
 	<div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 		<h1 class="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
-			{category} News
+			{category === 'HealthAndWellness'
+				? 'Health & Wellness'
+				: category === 'YogaAndMobility'
+					? 'Yoga & Mobility'
+					: category} News
 		</h1>
 
 		<a
