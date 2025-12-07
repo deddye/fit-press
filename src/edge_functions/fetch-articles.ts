@@ -105,6 +105,17 @@ async function fetchArticles() {
 			for (const item of allItems.slice(0, 5)) {
 				const title = item.title;
 				const link = item.link?.href ?? item.link;
+
+				// Fetch images for article here
+				const res = await fetch(link);
+
+				const html = await res.text();
+
+				// look for og:image
+				const ogImage = html.match(
+					/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i
+				)?.[1];
+
 				const summary = stripHtml(
 					item.description ?? item.summary ?? item['content:encoded']?.slice(0, 200) ?? ''
 				);
@@ -115,7 +126,8 @@ async function fetchArticles() {
 						url: link,
 						summary,
 						published_at: item.pubDate || item.updated || new Date().toISOString(),
-						fetched_at: new Date().toISOString()
+						fetched_at: new Date().toISOString(),
+						image_url: ogImage || null
 					},
 					{
 						onConflict: 'url'

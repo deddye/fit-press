@@ -149,19 +149,58 @@
 					{#each catArticles.slice(0, 6) as article}
 						<a href={article.url} target="_blank" rel="noopener noreferrer">
 							<div
-								class="max-w-[180px] min-w-[180px] shrink-0 snap-start rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+								class="relative max-w-[180px] min-w-[180px] shrink-0 snap-start overflow-hidden rounded-lg shadow-sm transition-shadow hover:shadow-md"
 							>
-								<h4 class="mt-1 line-clamp-2 text-sm leading-tight font-semibold">
-									{article.title}
-								</h4>
-								<p class="mt-1 line-clamp-3 text-xs text-gray-600 dark:text-gray-400">
-									{article.summary}
-								</p>
-								<p class="mt-1 text-[10px] text-gray-500 dark:text-gray-500">
-									{article.published_at
-										? new Date(article.published_at).toLocaleDateString()
-										: 'Unknown'}
-								</p>
+								<!-- Article Image (safe with fallback) -->
+								{#if article.image_url}
+									<img
+										src={article.image_url}
+										alt={article.title}
+										class="h-40 w-full object-cover"
+										loading="lazy"
+									/>
+								{:else}
+									<div
+										class="flex h-40 w-full items-center justify-center bg-linear-to-br from-gray-800 to-gray-700 text-gray-300"
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="h-8 w-8 opacity-60"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											stroke-width="1.5"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												d="M3 4.5v15a1.5 1.5 0 001.5 1.5h15a1.5 1.5 0 001.5-1.5v-15A1.5 1.5 0 0019.5 3h-15A1.5 1.5 0 003 4.5zm0 0l6.75 6.75m0 0L21 4.5m-11.25 6.75L3 19.5m6.75-8.25L21 19.5"
+											/>
+										</svg>
+									</div>
+								{/if}
+
+								<!-- Gradient Overlay -->
+								<div
+									class="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent"
+								></div>
+
+								<!-- Text Content -->
+								<div class="absolute right-2 bottom-2 left-2 text-white">
+									<h4 class="line-clamp-2 text-sm leading-tight font-semibold drop-shadow">
+										{article.title}
+									</h4>
+
+									<p class="mt-1 line-clamp-3 text-xs opacity-90 drop-shadow">
+										{article.summary}
+									</p>
+
+									<p class="mt-1 text-[10px] opacity-70">
+										{article.published_at
+											? new Date(article.published_at).toLocaleDateString()
+											: 'Unknown'}
+									</p>
+								</div>
 							</div>
 						</a>
 					{/each}
