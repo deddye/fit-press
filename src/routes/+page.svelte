@@ -97,7 +97,7 @@
 				name="email"
 				type="email"
 				bind:value={email}
-				placeholder="you@domain.com"
+				placeholder="Enter your email"
 				class="w-full rounded border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none sm:flex-1"
 				required
 				aria-required="true"
