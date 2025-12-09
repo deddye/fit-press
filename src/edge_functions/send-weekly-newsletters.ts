@@ -1,10 +1,39 @@
 // FitPress Weekly Newsletter - Deno Edge Function using fetch() with Resend API
+
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-const supabaseUrl = Deno.env.get('SUPABASE_URL');
-const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-const resendApiKey = Deno.env.get('RESEND_API_KEY');
+
+type Article = {
+	id: string;
+	title: string;
+	summary?: string;
+	url?: string;
+	category?: string;
+	published_at?: string;
+	fetched_at?: string;
+	source_type?: string;
+};
+
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const resendApiKey = Deno.env.get('RESEND_API_KEY')!;
 const supabase = createClient(supabaseUrl, supabaseKey);
-async function sendEmail(to, subject, html) {
+
+const newsletterToCategory = new Map([
+	['Bodybuilding Weekly', 'Bodybuilding'],
+	['Powerlifting Insider', 'Powerlifting'],
+	['CrossFit Pulse', 'CrossFit'],
+	['Nutrition Science', 'Nutrition'],
+	['Running Review', 'Running'],
+	['Supplement Spotlight', 'Supplements'],
+	['Science Based Wellness', 'HealthAndWellness'],
+	['Mobility Minute', 'YogaAndMobility']
+]);
+
+const categoryToNewsletter = new Map(
+	Array.from(newsletterToCategory, ([newsletterName, category]) => [category, newsletterName])
+);
+
+async function sendEmail(to: string, subject: string, html: string) {
 	const res = await fetch('https://api.resend.com/emails', {
 		method: 'POST',
 		headers: {
@@ -18,6 +47,7 @@ async function sendEmail(to, subject, html) {
 			html
 		})
 	});
+
 	if (!res.ok) {
 		const text = await res.text();
 		console.error(`❌ Failed to send email to ${to}:`, text);
@@ -25,45 +55,52 @@ async function sendEmail(to, subject, html) {
 		console.log(`✅ Sent newsletter to ${to}`);
 	}
 }
+
 Deno.serve(async () => {
 	console.log('📨 Starting weekly FitPress newsletter job...');
+
 	// Fetch subscribers
 	const { data: subscribers, error: subError } = await supabase
 		.from('subscriptions')
 		.select('email, interests');
+
 	if (subError || !subscribers) {
 		console.error('❌ Error fetching subscriptions:', subError);
-		return new Response('Failed to fetch subscriptions', {
-			status: 500
-		});
+		return new Response('Failed to fetch subscriptions', { status: 500 });
 	}
+
 	const { data: articles, error: artError } = await supabase
-		.from('articles')
+		.from<Article>('articles')
 		.select('*')
-		.order('published_at', {
-			ascending: false
-		});
+		.order('published_at', { ascending: false });
+
 	if (artError || !articles) {
 		console.error('❌ Error fetching articles:', artError);
-		return new Response('Failed to fetch articles', {
-			status: 500
-		});
+		return new Response('Failed to fetch articles', { status: 500 });
 	}
+
 	// Group by category
-	const grouped = {};
+	const grouped: Record<string, Article[]> = {};
 	for (const a of articles) {
 		const cat = a.category ?? 'Uncategorized';
 		if (!grouped[cat]) grouped[cat] = [];
 		grouped[cat].push(a);
 	}
+
 	for (const sub of subscribers) {
 		const { email, interests } = sub;
+
 		const hasInterests = interests && interests.length > 0;
-		const selectedCats = hasInterests ? interests : Object.keys(grouped);
+
+		const selectedCats = hasInterests
+			? interests.map((interest: string) => newsletterToCategory.get(interest))
+			: Object.keys(grouped);
+
 		const sections = selectedCats
 			.map((cat) => {
 				const items = grouped[cat]?.slice(0, hasInterests ? 3 : 2) ?? [];
 				if (!items.length) return '';
+
 				const articlesHtml = items
 					.map(
 						(a) => `
@@ -74,14 +111,17 @@ Deno.serve(async () => {
             </div>`
 					)
 					.join('');
+
 				return `
           <div style="margin-bottom:24px;">
-            <h2 style="color:#111;">${cat}</h2>
+            <h2 style="color:#111;">${categoryToNewsletter.get(cat)}</h2>
             ${articlesHtml}
           </div>`;
 			})
 			.join('');
+
 		if (!sections.trim()) continue;
+
 		const html = `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;line-height:1.6;">
         <h1 style="text-align:center;">🏋️‍♀️ Your FitPress Weekly Roundup</h1>
@@ -95,11 +135,11 @@ Deno.serve(async () => {
         </p>
       </div>
     `;
+
 		await sendEmail(email, '🔥 Your Weekly FitPress Fitness Digest', html);
 		await new Promise((r) => setTimeout(r, 600)); // slow down for Resend free-tier
 	}
+
 	console.log('✅ Newsletter job complete.');
-	return new Response('Newsletter job complete', {
-		status: 200
-	});
+	return new Response('Newsletter job complete', { status: 200 });
 });
