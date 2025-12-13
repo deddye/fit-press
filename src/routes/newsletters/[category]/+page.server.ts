@@ -1,12 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
-import type { PageLoad } from './$types';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import type { PageServerLoad } from '../../$types';
 
 const supabase = createClient(PUBLIC_SUPABASE_URL!, PUBLIC_SUPABASE_ANON_KEY!);
 
-export const load: PageLoad = async ({ params }) => {
-	const { category } = params;
+export const load: PageServerLoad = async ({ params }) => {
+	const { category } = params as { category: string };
 
 	const { data: articles, error } = await supabase
 		.from('articles')

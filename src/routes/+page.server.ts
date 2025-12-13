@@ -2,8 +2,24 @@ import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { fail } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
 const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
+
+export const load: PageServerLoad = async () => {
+	const { data: articles, error } = await supabase
+		.from('articles')
+		.select('*')
+		.order('published_at', { ascending: false })
+		.limit(20);
+
+	if (error) {
+		console.error('Error fetching articles:', error);
+		return { articles: [] };
+	}
+
+	return { articles };
+};
 
 export const actions = {
 	default: async ({ request }) => {

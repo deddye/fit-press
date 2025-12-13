@@ -80,8 +80,8 @@
 
 <section class="mx-auto max-w-4xl px-4 py-12 text-center">
 	<h1 class="mb-4 text-4xl font-bold">Your Weekly Fitness Updates</h1>
-	<p class="mb-6 text-gray-600">
-		Stay updated with the latest in bodybuilding, powerlifting, nutrition, and more.
+	<p class="mb-6 text-gray-400">
+		Curated articles on strength, health, and performance — Every week. 💪
 	</p>
 
 	<div class="mx-auto mb-12 max-w-md">
@@ -133,7 +133,11 @@
 	{#if articles?.length > 0}
 		{#each Array.from(new Map(articles.map( (a) => [a.category, articles.filter((b) => b.category === a.category)] )).entries()) as [category, catArticles]}
 			<section class="mb-10 text-left">
-				<a href={`/newsletters/${category}`} class="text-indigo-500 hover:underline">
+				<a
+					href={`/newsletters/${category}`}
+					class="text-indigo-500 hover:underline"
+					data-sveltekit-prefetch={false}
+				>
 					<h3 class="mb-3 text-xl font-semibold text-indigo-600 capitalize">
 						{category === 'HealthAndWellness'
 							? 'Health & Wellness'

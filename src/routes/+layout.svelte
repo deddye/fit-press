@@ -88,6 +88,30 @@
 <footer
 	class="border-t border-gray-200 bg-gray-50 py-6 text-center text-sm text-gray-600 transition-colors duration-300 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400"
 >
-	© {currentYear} <span class="font-semibold text-indigo-600 dark:text-indigo-400">FitPress</span> —
-	Built with 💪 passion for fitness
+	<div class="mb-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
+		<a href="/privacy" class="hover:text-indigo-600 hover:underline dark:hover:text-indigo-400">
+			Privacy Policy
+		</a>
+
+		<span class="opacity-50">•</span>
+
+		<a
+			href="mailto:contact@fitpress.app"
+			class="hover:text-indigo-600 hover:underline dark:hover:text-indigo-400"
+		>
+			Contact
+		</a>
+
+		<span class="opacity-50">•</span>
+
+		<a href="/unsubscribe" class="hover:text-indigo-600 hover:underline dark:hover:text-indigo-400">
+			Unsubscribe
+		</a>
+	</div>
+
+	<div>
+		© {currentYear}{' '}
+		<span class="font-semibold text-indigo-600 dark:text-indigo-400"> FitPress </span>
+		— For lifelong movers. 🧠 🏃
+	</div>
 </footer>
