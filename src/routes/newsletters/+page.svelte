@@ -139,3 +139,13 @@
 		</p>
 	{/if}
 </div>
+
+<style>
+	@media (hover: hover) and (pointer: fine) {
+		.dark button[aria-pressed='true']:hover {
+			transform: translateY(-2px);
+			border-color: #6366f1; /* Indigo-400 */
+			background-color: #e0e7ff; /* Indigo-50 */
+		}
+	}
+</style>
