@@ -12,7 +12,16 @@
 	let messageType: 'success' | 'error' | '' = '';
 	let messageTimeout: NodeJS.Timeout | null = null;
 
-	const categories = newsletters.map((n) => n.name);
+	const categoryEmoji: Record<string, string> = {
+		Bodybuilding: '🏋️‍♂️',
+		Powerlifting: '💪',
+		CrossFit: '🔥',
+		Nutrition: '🥗',
+		Running: '🏃',
+		Supplements: '💊',
+		HealthAndWellness: '🧠',
+		YogaAndMobility: '🧘'
+	};
 
 	async function subscribe() {
 		if (!email) {
@@ -67,18 +76,30 @@
 <div class="mx-auto max-w-lg p-6">
 	<h1 class="mb-4 text-center text-2xl font-bold">Choose Your FitPress Newsletters</h1>
 
-	<div class="mb-6 grid grid-cols-2 gap-2">
-		{#each categories as category}
-			<label
-				class="flex cursor-pointer items-center space-x-2 rounded bg-gray-100 p-2 dark:bg-gray-800"
+	<div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+		{#each newsletters as newsletter}
+			<button
+				type="button"
+				on:click={() => togglePreference(newsletter.name)}
+				aria-pressed={interests.includes(newsletter.name)}
+				class={`group rounded-xl border p-4 text-center transition
+				hover:-translate-y-0.5 hover:border-indigo-400 hover:bg-indigo-50
+
+				dark:hover:bg-indigo-900/20
+				${
+					interests.includes(newsletter.name)
+						? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-500 dark:bg-indigo-900/30'
+						: 'border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800'
+				}`}
 			>
-				<input
-					type="checkbox"
-					checked={interests.includes(category)}
-					on:change={() => togglePreference(category)}
-				/>
-				<span>{category}</span>
-			</label>
+				<div class="mb-2 text-3xl">
+					{categoryEmoji[newsletter.category]}
+				</div>
+
+				<p class="font-semibold text-gray-900 dark:text-gray-100">
+					{newsletter.name}
+				</p>
+			</button>
 		{/each}
 	</div>
 
