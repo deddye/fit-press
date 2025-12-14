@@ -80,12 +80,10 @@
 </script>
 
 <section class="mx-auto max-w-md px-4 py-12 text-center">
-	<h1 class="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">
+	<h1 class="mb-4 text-3xl font-bold text-gray-100">
 		We're sorry to see you go! Check back in the future, we may have some improvements.
 	</h1>
-	<p class="mb-6 text-gray-600 dark:text-gray-300">
-		Enter your email below to stop receiving our newsletter.
-	</p>
+	<p class="mb-6 text-gray-300">Enter your email below to stop receiving our newsletter.</p>
 
 	<form class="flex flex-col gap-3" on:submit|preventDefault={handleUnsubscribe} novalidate>
 		<label class="sr-only" for="email">Email</label>
@@ -94,7 +92,7 @@
 			type="email"
 			bind:value={email}
 			placeholder="Enter your email"
-			class="w-full rounded border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+			class="w-full rounded border border-gray-700 bg-gray-800 px-4 py-2 text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
 			required
 			aria-required="true"
 		/>

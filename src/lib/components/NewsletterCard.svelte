@@ -4,13 +4,13 @@
 
 <a
 	href={`/newsletters/${nl.category}`}
-	class="block rounded-lg border border-gray-200 p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-400 hover:shadow-md dark:border-gray-700 dark:hover:border-indigo-500"
+	class="block rounded-lg border border-gray-700 p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-500 hover:shadow-md"
 	data-sveltekit-prefetch={false}
 >
-	<h3 class="mb-2 text-xl font-semibold text-indigo-600 dark:text-indigo-400">
+	<h3 class="mb-2 text-xl font-semibold text-indigo-400">
 		{nl.name}
 	</h3>
-	<p class="text-sm text-gray-600 dark:text-gray-400">
+	<p class="text-sm text-gray-400">
 		{nl.description}
 	</p>
 </a>

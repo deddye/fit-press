@@ -5,7 +5,7 @@
 
 <section class="mx-auto max-w-4xl px-4 py-12">
 	<div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-		<h1 class="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
+		<h1 class="text-4xl font-bold text-indigo-400">
 			{category === 'HealthAndWellness'
 				? 'Health & Wellness'
 				: category === 'YogaAndMobility'
@@ -15,7 +15,7 @@
 
 		<a
 			href="/"
-			class="inline-block rounded bg-indigo-100 px-4 py-2 text-indigo-700 transition hover:bg-indigo-200 dark:bg-gray-800 dark:text-indigo-400 dark:hover:bg-gray-700"
+			class="inline-block rounded bg-gray-800 px-4 py-2 text-indigo-400 transition hover:bg-gray-700"
 		>
 			← Back to all newsletters
 		</a>
@@ -25,12 +25,12 @@
 		<div class="space-y-8">
 			{#each articles as article}
 				<article
-					class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+					class="rounded-xl border border-gray-800 bg-gray-900 p-6 shadow-sm transition hover:shadow-md"
 				>
 					<h2 class="mb-2 text-xl font-semibold">{article.title}</h2>
-					<p class="mb-3 text-sm text-gray-600 dark:text-gray-400">{article.summary}</p>
+					<p class="mb-3 text-sm text-gray-400">{article.summary}</p>
 
-					<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-500">
+					<div class="flex items-center justify-between text-xs text-gray-500">
 						<span>
 							Published: {article.published_at
 								? new Date(article.published_at).toLocaleDateString()
@@ -49,15 +49,12 @@
 			{/each}
 		</div>
 	{:else}
-		<p class="text-gray-600 dark:text-gray-400">
+		<p class="text-gray-400">
 			No articles found for {category}. Check back later!
 		</p>
 	{/if}
 
-	<a
-		href="/"
-		class="mt-12 inline-block text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400"
-	>
+	<a href="/" class="mt-12 inline-block text-indigo-500 hover:text-indigo-400">
 		← Back to all newsletters
 	</a>
 </section>

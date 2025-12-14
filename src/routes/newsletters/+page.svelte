@@ -85,15 +85,15 @@
 				class={`group newsletter-tile rounded-xl border p-4 text-center transition
 				${
 					interests.includes(newsletter.name)
-						? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-500 dark:bg-indigo-900/30'
-						: 'border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800'
+						? 'border-indigo-600  bg-indigo-900/30 ring-2 ring-indigo-500'
+						: 'border-gray-700 bg-gray-800'
 				}`}
 			>
 				<div class="mb-2 text-3xl">
 					{categoryEmoji[newsletter.category]}
 				</div>
 
-				<p class="font-semibold text-gray-900 dark:text-gray-100">
+				<p class="font-semibold text-gray-100">
 					{newsletter.name}
 				</p>
 			</button>
@@ -127,9 +127,7 @@
 	{#if message}
 		<p
 			class={`mt-3 text-center text-sm transition-opacity duration-300 ${
-				messageType === 'success'
-					? 'text-green-600 dark:text-green-400'
-					: 'text-red-600 dark:text-red-400'
+				messageType === 'success' ? 'text-green-400' : 'text-red-400'
 			}`}
 		>
 			{message}
@@ -142,13 +140,6 @@
 		/* Light mode hover */
 		button.newsletter-tile:hover {
 			transform: translateY(-2px);
-			border-color: #818cf8;
-			background-color: #eef2ff;
-		}
-	}
-
-	@media (hover: hover) and (pointer: fine) and (prefers-color-scheme: dark) {
-		button.newsletter-tile:hover {
 			border-color: #6366f1;
 			background-color: rgba(99, 102, 241, 0.2);
 		}
