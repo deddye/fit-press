@@ -82,10 +82,7 @@
 				type="button"
 				on:click={() => togglePreference(newsletter.name)}
 				aria-pressed={interests.includes(newsletter.name)}
-				class={`group rounded-xl border p-4 text-center transition
-				hover:-translate-y-0.5 hover:border-indigo-400 hover:bg-indigo-50
-
-				dark:hover:bg-indigo-900/20
+				class={`group newsletter-tile rounded-xl border p-4 text-center transition
 				${
 					interests.includes(newsletter.name)
 						? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-500 dark:bg-indigo-900/30'
@@ -142,10 +139,18 @@
 
 <style>
 	@media (hover: hover) and (pointer: fine) {
-		.dark button[aria-pressed='true']:hover {
+		/* Light mode hover */
+		button.newsletter-tile:hover {
 			transform: translateY(-2px);
-			border-color: #6366f1; /* Indigo-400 */
-			background-color: #e0e7ff; /* Indigo-50 */
+			border-color: #818cf8;
+			background-color: #eef2ff;
+		}
+	}
+
+	@media (hover: hover) and (pointer: fine) and (prefers-color-scheme: dark) {
+		button.newsletter-tile:hover {
+			border-color: #6366f1;
+			background-color: rgba(99, 102, 241, 0.2);
 		}
 	}
 </style>
