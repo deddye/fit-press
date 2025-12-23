@@ -21,7 +21,7 @@ export async function GET({ url, request }) {
 	await supabase
 		.from('subscriptions')
 		.update({
-			verified: true,
+			email_validated: true,
 			verified_at: new Date().toISOString(),
 			verification_token: null
 		})
