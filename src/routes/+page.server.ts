@@ -3,6 +3,7 @@ import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import crypto from 'crypto';
 
 const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
@@ -21,6 +22,10 @@ export const load: PageServerLoad = async () => {
 	return { articles };
 };
 
+function generateToken() {
+	return crypto.randomBytes(32).toString('hex');
+}
+
 export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData();
@@ -30,7 +35,11 @@ export const actions = {
 			return fail(400, { error: 'Please enter a valid email.' });
 		}
 
-		const { error } = await supabase.from('subscriptions').insert({ email });
+		const token = generateToken();
+
+		const { error } = await supabase
+			.from('subscriptions')
+			.insert({ email, verification_token: token });
 
 		if (error) {
 			if (error.code === '23505') {
