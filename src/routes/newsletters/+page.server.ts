@@ -38,7 +38,7 @@ export const actions = {
 
 		({ error } = await supabase
 			.from('subscriptions')
-			.insert({ email, interests, verification_token: token }));
+			.insert({ email, interests: interestJson, verification_token: token }));
 
 		if (error) {
 			if (error.code === '23505') {
