@@ -15,14 +15,15 @@ export const actions = {
 		const formData = await request.formData();
 		const email = formData.get('email')?.toString();
 		const interests = formData.get('interests')?.toString();
+		const interestJson = interests !== undefined ? JSON.parse(interests) : [];
 
 		let { data, error } = await supabase.from('subscriptions').select().eq('email', email);
 
 		if (data && data.length > 0) {
-			if (interests && interests.length > 2) {
+			if (interestJson && interestJson.length > 0) {
 				({ data, error } = await supabase
 					.from('subscriptions')
-					.upsert({ email, interests }, { onConflict: 'email' }));
+					.upsert({ email, interests: interestJson }, { onConflict: 'email' }));
 
 				return error
 					? fail(500, { error: 'Something went wrong. Try again later.' })
