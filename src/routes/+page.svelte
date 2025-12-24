@@ -49,10 +49,11 @@
 			});
 
 			const json = await res.json();
+			const data = JSON.parse(json.data);
 			if (!res.ok) {
-				error = json?.message ?? 'Subscription failed.';
+				error = data[0] ?? 'Subscription failed.';
 			} else {
-				message = json?.message ?? 'Subscribed!';
+				message = data[0] ?? 'Subscribed!';
 				email = '';
 			}
 

@@ -2,25 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { fail } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
 import crypto from 'crypto';
 
 const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
-
-export const load: PageServerLoad = async () => {
-	const { data: articles, error } = await supabase
-		.from('articles')
-		.select('*')
-		.order('published_at', { ascending: false })
-		.limit(20);
-
-	if (error) {
-		console.error('Error fetching articles:', error);
-		return { articles: [] };
-	}
-
-	return { articles };
-};
 
 function generateToken() {
 	return crypto.randomBytes(32).toString('hex');
@@ -30,12 +14,30 @@ export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData();
 		const email = formData.get('email')?.toString();
+		const interests = formData.get('interests')?.toString();
 
+		let { data, error } = await supabase.from('subscriptions').select().eq('email', email);
+
+		if (data && data.length > 0) {
+			if (interests && interests.length > 2) {
+				({ data, error } = await supabase
+					.from('subscriptions')
+					.upsert({ email, interests }, { onConflict: 'email' }));
+
+				return error
+					? fail(500, { error: 'Something went wrong. Try again later.' })
+					: 'Newsletters updated successfully!';
+			} else {
+				return 'No newsletters selected!';
+			}
+		}
+
+		// email was not found, we need to add it with a verification token
 		const token = generateToken();
 
-		const { error } = await supabase
+		({ error } = await supabase
 			.from('subscriptions')
-			.insert({ email, verification_token: token });
+			.insert({ email, interests, verification_token: token }));
 
 		if (error) {
 			if (error.code === '23505') {
@@ -44,6 +46,7 @@ export const actions = {
 			}
 			return fail(500, { error: 'Subscription failed. Try again later.' });
 		}
+
 		return 'Thanks for subscribing!';
 	}
 };
