@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { createClient } from '@supabase/supabase-js';
-	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 	import { newsletters } from '$lib/data/newsletters';
 	import { onDestroy } from 'svelte';
 
@@ -145,7 +143,7 @@
 		{#if loading}
 			Updating...
 		{:else}
-			Subscribe
+			Subscribe/ Update
 		{/if}
 	</button>
 	{#if message}
