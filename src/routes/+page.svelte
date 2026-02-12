@@ -32,7 +32,7 @@
 			timeoutId = setTimeout(() => {
 				error = null;
 				timeoutId = null;
-			}, 2000);
+			}, 4000);
 			return;
 		}
 
@@ -61,13 +61,13 @@
 				message = null;
 				error = null;
 				timeoutId = null;
-			}, 2000);
+			}, 4000);
 		} catch {
 			error = 'Network error. Please try again.';
 			timeoutId = setTimeout(() => {
 				error = null;
 				timeoutId = null;
-			}, 2000);
+			}, 4000);
 		} finally {
 			loading = false;
 		}

@@ -48,6 +48,6 @@ export const actions = {
 			return fail(500, { error: 'Subscription failed. Try again later.' });
 		}
 
-		return 'Thanks for subscribing!';
+		return 'Thanks for subscribing! Please check your email (and spam!!) to confirm your subscription.';
 	}
 };
