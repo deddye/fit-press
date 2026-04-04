@@ -209,6 +209,9 @@
 										{article.published_at
 											? new Date(article.published_at).toLocaleDateString()
 											: 'Unknown'}
+										{#if article.reading_time}
+											<span> • {article.reading_time} min</span>
+										{/if}
 									</p>
 								</div>
 							</div>
@@ -268,6 +271,9 @@
 									{article.published_at
 										? new Date(article.published_at).toLocaleDateString()
 										: 'Unknown'}
+									{#if article.reading_time}
+										<span> • {article.reading_time} min</span>
+									{/if}
 								</p>
 							</div>
 						</a>

@@ -1,11 +1,12 @@
 export type Article = {
-	id: string; // or number if your DB uses serial integers
+	id: string;
 	url: string;
 	title: string;
 	summary: string | null;
-	published_at: string | null; // ISO string from DB
-	fetched_at: string; // ISO string
-	source_type: string; // consider narrowing later
+	published_at: string | null;
+	fetched_at: string;
+	source_type: string;
 	image_url: string | null;
 	category: string;
+	reading_time: number | null;
 };

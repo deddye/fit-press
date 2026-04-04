@@ -1,5 +1,9 @@
 <script lang="ts">
-	export let data;
+	import type { Article } from '$lib/types/article';
+	export let data: {
+		category: string;
+		articles: Article[];
+	};
 	const { category, articles } = data;
 </script>
 
@@ -24,28 +28,33 @@
 	{#if articles?.length > 0}
 		<div class="space-y-8">
 			{#each articles as article}
-				<article
-					class="rounded-xl border border-gray-800 bg-gray-900 p-6 shadow-sm transition hover:shadow-md"
+				<a
+					href={article.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="block cursor-pointer rounded-xl border border-gray-800 bg-gray-900 p-6 shadow-sm transition hover:bg-gray-800 hover:shadow-md"
 				>
-					<h2 class="mb-2 text-xl font-semibold">{article.title}</h2>
-					<p class="mb-3 text-sm text-gray-400">{article.summary}</p>
+					<h2 class="mb-2 text-xl font-semibold hover:underline">
+						{article.title}
+					</h2>
+
+					<p class="mb-3 text-sm text-gray-400">
+						{article.summary}
+					</p>
 
 					<div class="flex items-center justify-between text-xs text-gray-500">
 						<span>
-							Published: {article.published_at
+							{article.published_at
 								? new Date(article.published_at).toLocaleDateString()
 								: 'Unknown'}
+							{#if article.reading_time}
+								<span> • {article.reading_time} min</span>
+							{/if}
 						</span>
-						<a
-							href={article.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="text-indigo-500 hover:underline"
-						>
-							Read more →
-						</a>
+
+						<span class="text-indigo-500">Read →</span>
 					</div>
-				</article>
+				</a>
 			{/each}
 		</div>
 	{:else}
