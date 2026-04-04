@@ -217,15 +217,6 @@
 							</div>
 						</a>
 					{/each}
-					<a
-						href="/all-categories"
-						class="flex max-w-[180px] min-w-[180px] items-center justify-center rounded-lg bg-linear-to-br from-indigo-600 to-purple-600 text-white shadow-sm"
-					>
-						<div class="px-2 text-center">
-							<p class="text-sm font-semibold">All</p>
-							<p class="text-xs opacity-80">Categories →</p>
-						</div>
-					</a>
 				</div>
 
 				<!-- DESKTOP: Grid Layout -->
@@ -287,19 +278,18 @@
 							</div>
 						</a>
 					{/each}
-					<a
-						href="/all-categories"
-						class="group relative flex h-64 items-center justify-center overflow-hidden rounded-xl bg-linear-to-br from-indigo-600 to-purple-600 text-white shadow-md transition hover:shadow-xl"
-					>
-						<div class="text-center">
-							<h4 class="text-lg font-semibold">All Categories</h4>
-							<p class="mt-2 text-sm opacity-80">Browse everything →</p>
-						</div>
-					</a>
 				</div>
 			</section>
 		{/each}
 	{:else}
 		<p class="text-center text-gray-500">No articles yet.</p>
 	{/if}
+	<div class="mt-12 text-center">
+		<a
+			href="/all-categories"
+			class="inline-block rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-700"
+		>
+			Browse All Categories →
+		</a>
+	</div>
 </section>
