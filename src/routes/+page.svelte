@@ -266,7 +266,7 @@
 				{/each}
 			</div>
 
-			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+			<div class="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-3">
 				{#each catArticles.slice(0, 6) as article (article.id)}
 					<a href={article.url} target="_blank" class="relative h-64 overflow-hidden rounded-xl">
 						{#if article.image_url}
