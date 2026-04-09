@@ -263,7 +263,11 @@
 
 			<div class="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-3">
 				{#each catArticles.slice(0, 6) as article (article.id)}
-					<a href={article.url} target="_blank" class="relative h-64 overflow-hidden rounded-xl">
+					<a
+						href={article.url}
+						target="_blank"
+						class="group relative h-64 overflow-hidden rounded-xl"
+					>
 						{#if article.image_url}
 							<img
 								src={article.image_url}
