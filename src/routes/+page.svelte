@@ -237,11 +237,6 @@
 							<!-- Gradient -->
 							<div class="absolute inset-0 bg-linear-to-t from-black/70 to-transparent"></div>
 
-							<!-- Category Badge -->
-							<div class="absolute top-2 left-2 rounded bg-indigo-600 px-2 py-1 text-xs text-white">
-								{formatCategory(category)}
-							</div>
-
 							<!-- Content -->
 							<div class="absolute right-2 bottom-2 left-2 text-white">
 								<h4 class="line-clamp-2 text-sm leading-tight font-semibold drop-shadow">
