@@ -93,7 +93,7 @@
 	<div class="text-center">
 		<h1 class="mb-4 text-4xl font-bold">Your Weekly Fitness Updates</h1>
 		<p class="mb-6 text-gray-400">
-			Curated articles on strength, health, and performance — Every week. 💪
+			Curated articles on strength, health, and performance "em dash" Every week! 💪
 		</p>
 	</div>
 
